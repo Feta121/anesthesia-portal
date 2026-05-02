@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAU Anesthesia Portal — Course Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1D9E75;
+    --teal-light: #E1F5EE;
+    --teal-dark: #085041;
+    --amber: #EF9F27;
+    --amber-light: #FAEEDA;
+    --coral: #D85A30;
+    --coral-light: #FAECE7;
+    --purple: #534AB7;
+    --purple-light: #EEEDFE;
+    --blue: #378ADD;
+    --blue-light: #E6F1FB;
+    --gray: #f8f9fb;
+    --text: #1a1a2e;
+    --text-muted: #6b7280;
+    --white: #ffffff;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-hover: 0 12px 40px rgba(0,0,0,0.14);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f0f4f8;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ===== HERO HEADER ===== */
+  header {
+    background: linear-gradient(135deg, #0F6E56 0%, #1D9E75 40%, #378ADD 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 250px; height: 250px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 40px;
+    position: relative;
+    z-index: 1;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .header-badge span { font-size: 16px; }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  header h1 em {
+    font-style: normal;
+    color: #9FE1CB;
+  }
+  header p.subtitle {
+    color: rgba(255,255,255,0.85);
+    font-size: 16px;
+    max-width: 540px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .header-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 12px 20px;
+    text-align: center;
+  }
+  .stat-pill .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+  }
+  .stat-pill .lbl {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 3px;
+  }
+
+  /* ===== NAV TABS ===== */
+  .tabs-bar {
+    background: #fff;
+    border-bottom: 2px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .tabs-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs-inner::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 16px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--teal); }
+  .tab-btn.active {
+    color: var(--teal-dark);
+    border-bottom-color: var(--teal);
+    font-weight: 600;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 36px 24px 60px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .section-sub {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  /* ===== YEAR PANELS ===== */
+  .year-panel { display: none; }
+  .year-panel.active { display: block; }
+
+  /* ===== SEMESTER BLOCK ===== */
+  .semester-block {
+    margin-bottom: 36px;
+  }
+  .semester-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .semester-label h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .semester-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+  }
+
+  /* ===== COURSE CARDS ===== */
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+  }
+  .course-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .course-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    border-radius: 4px 0 0 4px;
+  }
+  .course-card.teal::before { background: var(--teal); }
+  .course-card.amber::before { background: var(--amber); }
+  .course-card.coral::before { background: var(--coral); }
+  .course-card.purple::before { background: var(--purple); }
+  .course-card.blue::before { background: var(--blue); }
+
+  .course-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: #e5e7eb;
+  }
+  .course-card:hover.teal { border-color: #9FE1CB; }
+  .course-card:hover.amber { border-color: #FAC775; }
+  .course-card:hover.coral { border-color: #F5C4B3; }
+  .course-card:hover.purple { border-color: #CECBF6; }
+  .course-card:hover.blue { border-color: #B5D4F4; }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-left: 12px;
+  }
+  .course-code {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+  .teal .course-code { background: var(--teal-light); color: var(--teal-dark); }
+  .amber .course-code { background: var(--amber-light); color: #633806; }
+  .coral .course-code { background: var(--coral-light); color: #4A1B0C; }
+  .purple .course-code { background: var(--purple-light); color: #26215C; }
+  .blue .course-code { background: var(--blue-light); color: #042C53; }
+
+  .card-credits {
+    display: flex;
+    gap: 8px;
+  }
+  .credit-badge {
+    text-align: center;
+    min-width: 42px;
+  }
+  .credit-badge .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .credit-badge .type {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .credit-sep {
+    width: 1px;
+    background: #e5e7eb;
+    margin: 2px 0;
+  }
+  .teal .credit-badge .val { color: var(--teal-dark); }
+  .amber .credit-badge .val { color: #633806; }
+  .coral .credit-badge .val { color: #4A1B0C; }
+  .purple .credit-badge .val { color: #26215C; }
+  .blue .credit-badge .val { color: #042C53; }
+
+  .course-name {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    padding-left: 12px;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 8px;
+    padding-left: 12px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .btn-primary {
+    background: var(--teal);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--teal-dark); }
+  .btn-amber { background: var(--amber-light); color: #633806; }
+  .btn-amber:hover { background: #FAC775; }
+  .btn-coral { background: var(--coral-light); color: #4A1B0C; }
+  .btn-coral:hover { background: #F5C4B3; }
+  .btn-purple { background: var(--purple-light); color: #26215C; }
+  .btn-purple:hover { background: #CECBF6; }
+  .btn-blue { background: var(--blue-light); color: #042C53; }
+  .btn-blue:hover { background: #B5D4F4; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 1000;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 20px;
+    max-width: 680px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal-hero {
+    padding: 28px 28px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .modal-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .modal-close {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid #e5e7eb;
+    background: #f9fafb;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .modal-close:hover { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.3;
+    max-width: 500px;
+  }
+  .modal-meta {
+    display: flex;
+    gap: 10px;
+    padding: 16px 0;
+    flex-wrap: wrap;
+  }
+  .meta-chip {
+    display: flex; align-items: center; gap: 5px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .modal-body { padding: 24px 28px 28px; }
+  .modal-section { margin-bottom: 24px; }
+  .modal-section h4 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .topics-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .topics-list li {
+    background: var(--gray);
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+
+  .resource-list { list-style: none; }
+  .resource-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .resource-item:hover {
+    background: var(--gray);
+    border-color: #d1d5db;
+  }
+  .resource-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .res-ppt { background: #FFF0E6; }
+  .res-pdf { background: #FFE8E8; }
+  .res-vid { background: #E8F0FF; }
+  .res-lab { background: #E8FAF1; }
+  .resource-info .res-name { font-size: 14px; font-weight: 500; }
+  .resource-info .res-type { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+  .ask-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--blue) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: opacity 0.2s;
+    margin-top: 20px;
+  }
+  .ask-btn:hover { opacity: 0.92; }
+
+  /* ===== AI CHAT BOX inside modal ===== */
+  .ai-chat-area {
+    margin-top: 16px;
+    display: none;
+  }
+  .ai-chat-area.open { display: block; }
+  .chat-messages {
+    max-height: 280px;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px;
+    background: var(--gray);
+    margin-bottom: 10px;
+  }
+  .chat-msg {
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .chat-msg.user { text-align: right; }
+  .chat-msg .bubble {
+    display: inline-block;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    max-width: 80%;
+    text-align: left;
+  }
+  .chat-msg.user .bubble {
+    background: var(--teal);
+    color: #fff;
+    border-radius: 12px 12px 2px 12px;
+  }
+  .chat-msg.ai .bubble {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px 12px 12px 2px;
+  }
+  .chat-input-row {
+    display: flex; gap: 8px;
+  }
+  .chat-input-row input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .chat-input-row input:focus { border-color: var(--teal); }
+  .chat-input-row button {
+    padding: 10px 18px;
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* ===== QUICK ACCESS ===== */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .quick-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1.5px solid transparent;
+  }
+  .quick-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+  .quick-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .quick-text .ql { font-weight: 600; font-size: 15px; }
+  .quick-text .qs { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ===== SEARCH ===== */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 32px;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 14px 20px 14px 48px;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-wrap input:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 4px rgba(29,158,117,0.1);
+  }
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-muted);
+    font-size: 13px;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+  }
+  footer strong { color: var(--teal-dark); }
+
+  /* ===== LOADING ===== */
+  .typing-dots { display: inline-flex; gap: 4px; align-items: center; padding: 4px 0; }
+  .typing-dots span {
+    width: 6px; height: 6px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+  }
+
+  @media (max-width: 600px) {
+    .header-stats { gap: 14px; }
+    .courses-grid { grid-template-columns: 1fr; }
+    .modal-body, .modal-hero { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-badge">
+      <span>🇪🇹</span> Addis Ababa University — College of Health Sciences
+    </div>
+    <h1>Anesthesia <em>Course Hub</em></h1>
+    <p class="subtitle">Your all-in-one study portal. Browse every course, check credit hours, download slides, and ask AI study questions — all for free.</p>
+    <div class="header-stats">
+      <div class="stat-pill"><div class="num">4</div><div class="lbl">Years of Study</div></div>
+      <div class="stat-pill"><div class="num">40+</div><div class="lbl">Courses</div></div>
+      <div class="stat-pill"><div class="num">240</div><div class="lbl">Credit Hours</div></div>
+      <div class="stat-pill"><div class="num">AI</div><div class="lbl">Study Helper</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV TABS -->
+<div class="tabs-bar">
+  <div class="tabs-inner">
+    <button class="tab-btn active" onclick="switchTab('home')">🏠 Home</button>
+    <button class="tab-btn" onclick="switchTab('year1')">Year 1</button>
+    <button class="tab-btn" onclick="switchTab('year2')">Year 2</button>
+    <button class="tab-btn" onclick="switchTab('year3')">Year 3</button>
+    <button class="tab-btn" onclick="switchTab('year4')">Year 4</button>
+    <button class="tab-btn" onclick="switchTab('search')">🔍 Search</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+
+  <!-- HOME PANEL -->
+  <div id="panel-home" class="year-panel active">
+    <p class="section-sub" style="margin-bottom:24px; font-size:15px;">Welcome! Pick a year to browse courses, or use Quick Access below. Click any course to get study materials and ask AI questions.</p>
+
+    <div class="quick-grid">
+      <div class="quick-card" onclick="switchTab('year1')">
+        <div class="quick-icon" style="background:#E1F5EE">📘</div>
+        <div class="quick-text"><div class="ql">Year 1</div><div class="qs">Foundation Sciences</div></div>
+      </div>
+      <div class="quick-card" onclick="switchTab('year2')">
+        <div class="quick-icon" style="background:#FAEEDA">📗</div>
+        <div class="quick-text"><div class="ql">Year 2</div><div class="qs">Clinical Foundations</div></div>
+      </div>
+      <div class="quick-card" onclick="switchTab('year3')">
+        <div class="quick-icon" style="background:#EEEDFE">📕</div>
+        <div class="quick-text"><div class="ql">Year 3</div><div class="qs">Applied Anesthesia</div></div>
+      </div>
+      <div class="quick-card" onclick="switchTab('year4')">
+        <div class="quick-icon" style="background:#E6F1FB">📙</div>
+        <div class="quick-text"><div class="ql">Year 4</div><div class="qs">Advanced & Internship</div></div>
+      </div>
+      <div class="quick-card" onclick="openCourse('pharmacology')">
+        <div class="quick-icon" style="background:#FAECE7">💊</div>
+        <div class="quick-text"><div class="ql">Pharmacology</div><div class="qs">Anesthetic drugs</div></div>
+      </div>
+      <div class="quick-card" onclick="openCourse('anatomy')">
+        <div class="quick-icon" style="background:#E1F5EE">🫀</div>
+        <div class="quick-text"><div class="ql">Anatomy</div><div class="qs">Regional & systemic</div></div>
+      </div>
+      <div class="quick-card" onclick="openCourse('general_anesthesia')">
+        <div class="quick-icon" style="background:#EEEDFE">🩺</div>
+        <div class="quick-text"><div class="ql">General Anesthesia</div><div class="qs">Core techniques</div></div>
+      </div>
+      <div class="quick-card" onclick="switchTab('search')">
+        <div class="quick-icon" style="background:#f0f4f8">🔍</div>
+        <div class="quick-text"><div class="ql">Search Courses</div><div class="qs">Find anything fast</div></div>
+      </div>
+    </div>
+
+    <div class="section-title">How to use this portal</div>
+    <p class="section-sub">1. Go to your year tab → 2. Click any course card → 3. View credit hours, topics & slides → 4. Ask the AI tutor anything!</p>
+  </div>
+
+  <!-- SEARCH PANEL -->
+  <div id="panel-search" class="year-panel">
+    <div class="section-title">Search All Courses</div>
+    <p class="section-sub">Type a course name, topic, or keyword</p>
+    <div class="search-wrap">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="e.g. pharmacology, airway, regional anesthesia..." oninput="doSearch()">
+    </div>
+    <div id="searchResults" class="courses-grid"></div>
+    <p id="searchEmpty" style="color:var(--text-muted); display:none; text-align:center; padding:40px 0;">No courses found. Try a different keyword.</p>
+  </div>
+
+  <!-- YEAR 1 -->
+  <div id="panel-year1" class="year-panel">
+    <div class="section-title">Year 1 — Foundation Sciences</div>
+    <p class="section-sub">Basic medical sciences that form the core of anesthesia practice</p>
+
+    <div class="semester-block">
+      <div class="semester-label"><h3>Semester 1</h3></div>
+      <div class="courses-grid" id="year1-sem1"></div>
+    </div>
+    <div class="semester-block">
+      <div class="semester-label"><h3>Semester 2</h3></div>
+      <div class="courses-grid" id="year1-sem2"></div>
+    </div>
+  </div>
+
+  <!-- YEAR 2 -->
+  <div id="panel-year2" class="year-panel">
+    <div class="section-title">Year 2 — Clinical Foundations</div>
+    <p class="section-sub">Pathophysiology, clinical skills and introduction to anesthesia</p>
+    <div class="semester-block">
+      <div class="semester-label"><h3>Semester 1</h3></div>
+      <div class="courses-grid" id="year2-sem1"></div>
+    </div>
+    <div class="semester-block">
+      <div class="semester-label"><h3>Semester 2</h3></div>
+      <div class="courses-grid" id="year2-sem2"></div>
+    </div>
+  </div>
+
+  <!-- YEAR 3 -->
+  <div id="panel-year3" class="year-panel">
+    <div class="section-title">Year 3 — Applied Anesthesia</div>
+    <p class="section-sub">Core anesthetic techniques, subspecialty practice and patient management</p>
+    <div class="semester-block">
+      <div class="semester-label"><h3>Semester 1</h3></div>
+      <div class="courses-grid" id="year3-sem1"></div>
+    </div>
+    <div class="semester-block">
+      <div class="semester-label"><h3>Semester 2</h3></div>
+      <div class="courses-grid" id="year3-sem2"></div>
+    </div>
+  </div>
+
+  <!-- YEAR 4 -->
+  <div id="panel-year4" class="year-panel">
+    <div class="section-title">Year 4 — Advanced Practice & Internship</div>
+    <p class="section-sub">Advanced techniques, ICU, research methods and clinical internship</p>
+    <div class="semester-block">
+      <div class="semester-label"><h3>Semester 1</h3></div>
+      <div class="courses-grid" id="year4-sem1"></div>
+    </div>
+    <div class="semester-block">
+      <div class="semester-label"><h3>Semester 2 / Internship</h3></div>
+      <div class="courses-grid" id="year4-sem2"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Built with ❤️ for <strong>AAU Anesthesia Students</strong> &nbsp;·&nbsp; Free forever &nbsp;·&nbsp; All AI answers are educational — always verify clinically
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalIfOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hero">
+      <div class="modal-top-row">
+        <div>
+          <div class="modal-title" id="modalTitle"></div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-meta" id="modalMeta"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <h4>Key Topics Covered</h4>
+        <ul class="topics-list" id="modalTopics"></ul>
+      </div>
+      <div class="modal-section">
+        <h4>Study Resources</h4>
+        <ul class="resource-list" id="modalResources"></ul>
+      </div>
+      <div class="modal-section">
+        <h4>🤖 AI Tutor — Ask Anything About This Course</h4>
+        <button class="ask-btn" onclick="toggleChat()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Ask AI Tutor
+        </button>
+        <div class="ai-chat-area" id="aiChatArea">
+          <div class="chat-messages" id="chatMessages"></div>
+          <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Ask about this course..." onkeydown="if(event.key==='Enter')sendChat()">
+            <button onclick="sendChat()">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const courses = {
+  anatomy: {
+    id: 'anatomy',
+    code: 'ANAT 101',
+    name: 'Human Anatomy',
+    credits: 5, ects: 7,
+    year: 1, sem: 1, color: 'teal',
+    topics: ['Gross anatomy', 'Regional anatomy', 'Neuroanatomy', 'Airway anatomy', 'Vascular access anatomy', 'Spinal cord anatomy'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Introduction to Human Anatomy', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Upper & Lower Limb Anatomy', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 3 – Thorax & Airway Anatomy', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Anatomy Lab Manual', cls: 'res-pdf' },
+      { icon: '🎬', type: 'video', name: 'Spinal Anatomy for Anesthesia (Video)', cls: 'res-vid' },
+    ]
+  },
+  physiology: {
+    id: 'physiology',
+    code: 'PHYS 101',
+    name: 'Human Physiology',
+    credits: 5, ects: 7,
+    year: 1, sem: 1, color: 'teal',
+    topics: ['Cardiovascular physiology', 'Respiratory physiology', 'Renal physiology', 'Neurophysiology', 'Acid-base balance', 'Fluid compartments'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Cardiovascular Physiology', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Respiratory Physiology', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Guyton & Hall Summary Notes', cls: 'res-pdf' },
+      { icon: '📄', type: 'pdf', name: 'Acid-Base Balance Worksheet', cls: 'res-pdf' },
+    ]
+  },
+  biochemistry: {
+    id: 'biochemistry',
+    code: 'BCHE 101',
+    name: 'Biochemistry',
+    credits: 4, ects: 6,
+    year: 1, sem: 1, color: 'amber',
+    topics: ['Proteins & enzymes', 'Metabolism', 'Lipids', 'Nucleic acids', 'Vitamins & cofactors'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Enzymes & Metabolism', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Biochemistry Quick Reference', cls: 'res-pdf' },
+    ]
+  },
+  pharmacology: {
+    id: 'pharmacology',
+    code: 'PHRM 201',
+    name: 'Pharmacology of Anesthetic Agents',
+    credits: 6, ects: 9,
+    year: 2, sem: 1, color: 'teal',
+    topics: ['Inhalation agents', 'IV induction agents', 'Neuromuscular blockers', 'Opioids', 'Local anesthetics', 'Vasopressors', 'Drug interactions'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Inhalation Anesthetic Agents', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – IV Induction Agents (Propofol, Ketamine)', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 3 – Neuromuscular Blocking Drugs', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 4 – Opioids in Anesthesia', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Drug Dose Quick Reference Card', cls: 'res-pdf' },
+      { icon: '🔬', type: 'lab', name: 'Virtual Pharmacology Lab Exercises', cls: 'res-lab' },
+    ]
+  },
+  pathophysiology: {
+    id: 'pathophysiology',
+    code: 'PATH 201',
+    name: 'Pathophysiology',
+    credits: 5, ects: 7,
+    year: 2, sem: 1, color: 'coral',
+    topics: ['Shock pathophysiology', 'Heart failure', 'ARDS', 'Sepsis', 'Coagulation disorders', 'Liver failure'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Shock & Hemodynamic Failure', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Respiratory Failure & ARDS', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Pathophysiology Case Studies', cls: 'res-pdf' },
+    ]
+  },
+  general_anesthesia: {
+    id: 'general_anesthesia',
+    code: 'ANES 301',
+    name: 'General Anesthesia',
+    credits: 7, ects: 10,
+    year: 3, sem: 1, color: 'purple',
+    topics: ['Pre-operative assessment', 'Induction techniques', 'Airway management', 'Maintenance of anesthesia', 'Emergence & recovery', 'Anesthesia machine check', 'Complications management'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Pre-op Assessment & ASA Classification', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Anesthesia Machine & Equipment', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 3 – Induction & Airway Management', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 4 – Intraoperative Monitoring', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 5 – Emergence & PACU', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Anesthesia Checklist Protocol', cls: 'res-pdf' },
+      { icon: '🎬', type: 'video', name: 'Rapid Sequence Induction Demo', cls: 'res-vid' },
+    ]
+  },
+  regional_anesthesia: {
+    id: 'regional_anesthesia',
+    code: 'ANES 302',
+    name: 'Regional Anesthesia',
+    credits: 6, ects: 9,
+    year: 3, sem: 1, color: 'blue',
+    topics: ['Spinal anesthesia', 'Epidural anesthesia', 'Combined spinal-epidural', 'Brachial plexus blocks', 'Femoral nerve block', 'Ultrasound-guided techniques', 'Complications'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Spinal Anesthesia', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Epidural Technique', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 3 – Peripheral Nerve Blocks', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Regional Anesthesia Atlas', cls: 'res-pdf' },
+      { icon: '🎬', type: 'video', name: 'Spinal Anesthesia Step-by-Step', cls: 'res-vid' },
+    ]
+  },
+  obstetric_anesthesia: {
+    id: 'obstetric_anesthesia',
+    code: 'ANES 303',
+    name: 'Obstetric Anesthesia',
+    credits: 5, ects: 7,
+    year: 3, sem: 2, color: 'coral',
+    topics: ['Physiological changes in pregnancy', 'Labor analgesia', 'C-section anesthesia', 'Pre-eclampsia management', 'Neonatal resuscitation', 'Hemorrhage protocols'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Physiology of Pregnancy', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Anesthesia for C-Section', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Obstetric Emergency Protocols', cls: 'res-pdf' },
+    ]
+  },
+  pediatric_anesthesia: {
+    id: 'pediatric_anesthesia',
+    code: 'ANES 304',
+    name: 'Pediatric Anesthesia',
+    credits: 5, ects: 7,
+    year: 3, sem: 2, color: 'amber',
+    topics: ['Pediatric anatomy differences', 'Neonatal anesthesia', 'Pediatric dosing', 'Congenital heart disease', 'Airway management in children', 'Post-op care'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Pediatric Anatomy & Physiology', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Neonatal Anesthesia', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Pediatric Drug Dosing Chart', cls: 'res-pdf' },
+    ]
+  },
+  critical_care: {
+    id: 'critical_care',
+    code: 'CRIT 401',
+    name: 'Critical Care Medicine',
+    credits: 6, ects: 9,
+    year: 4, sem: 1, color: 'coral',
+    topics: ['Mechanical ventilation', 'Hemodynamic monitoring', 'Sepsis management', 'ARDS management', 'Renal replacement therapy', 'Nutrition in ICU', 'End-of-life care'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Mechanical Ventilation Basics', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Sepsis: Surviving Sepsis Campaign', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 3 – Hemodynamic Monitoring', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'ICU Protocol Bundle', cls: 'res-pdf' },
+      { icon: '🔬', type: 'lab', name: 'Ventilator Simulation Cases', cls: 'res-lab' },
+    ]
+  },
+  pain_management: {
+    id: 'pain_management',
+    code: 'PAIN 401',
+    name: 'Pain Management',
+    credits: 5, ects: 7,
+    year: 4, sem: 1, color: 'purple',
+    topics: ['Acute pain management', 'Chronic pain', 'Cancer pain', 'Multimodal analgesia', 'WHO pain ladder', 'Interventional pain procedures', 'Palliative care'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Acute vs Chronic Pain', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Multimodal Analgesia', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'WHO Pain Management Guidelines', cls: 'res-pdf' },
+    ]
+  },
+  research_methods: {
+    id: 'research_methods',
+    code: 'RSCH 401',
+    name: 'Research Methods & Biostatistics',
+    credits: 4, ects: 6,
+    year: 4, sem: 1, color: 'blue',
+    topics: ['Research design', 'Hypothesis testing', 'Statistical tests', 'Clinical trials', 'Systematic review', 'Evidence-based medicine'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Study Designs', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Biostatistics Fundamentals', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Statistical Test Cheat Sheet', cls: 'res-pdf' },
+    ]
+  },
+  clinical_internship: {
+    id: 'clinical_internship',
+    code: 'INT 402',
+    name: 'Clinical Internship (Anesthesia)',
+    credits: 12, ects: 18,
+    year: 4, sem: 2, color: 'teal',
+    topics: ['OR rotations', 'ICU rotations', 'Obstetric rotations', 'Pediatric rotations', 'Emergency anesthesia', 'Case presentations', 'Portfolio assessment'],
+    resources: [
+      { icon: '📄', type: 'pdf', name: 'Internship Logbook & Portfolio', cls: 'res-pdf' },
+      { icon: '📄', type: 'pdf', name: 'Case Presentation Template', cls: 'res-pdf' },
+      { icon: '📄', type: 'pdf', name: 'Competency Assessment Form', cls: 'res-pdf' },
+    ]
+  },
+  microbiology: {
+    id: 'microbiology',
+    code: 'MICR 102',
+    name: 'Microbiology & Infection Control',
+    credits: 4, ects: 6,
+    year: 1, sem: 2, color: 'amber',
+    topics: ['Bacteria & viruses', 'Sterilization', 'Infection control in OR', 'Antibiotics', 'Healthcare-associated infections'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Infection Control in OR', cls: 'res-ppt' },
+      { icon: '📄', type: 'pdf', name: 'Antibiotic Guide for Surgeons', cls: 'res-pdf' },
+    ]
+  },
+  clinical_skills: {
+    id: 'clinical_skills',
+    code: 'CLIN 102',
+    name: 'Clinical Skills & Patient Safety',
+    credits: 3, ects: 5,
+    year: 1, sem: 2, color: 'teal',
+    topics: ['History taking', 'Physical examination', 'Vital signs', 'Patient safety principles', 'Medical ethics', 'Documentation'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – History & Physical Exam', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Patient Safety WHO Checklist', cls: 'res-ppt' },
+    ]
+  },
+  airway_management: {
+    id: 'airway_management',
+    code: 'ANES 202',
+    name: 'Airway Management',
+    credits: 5, ects: 7,
+    year: 2, sem: 2, color: 'purple',
+    topics: ['Airway assessment', 'Bag-mask ventilation', 'Endotracheal intubation', 'Supraglottic airways', 'Difficult airway algorithm', 'Surgical airway'],
+    resources: [
+      { icon: '📊', type: 'ppt', name: 'Lecture 1 – Airway Assessment (LEMON)', cls: 'res-ppt' },
+      { icon: '📊', type: 'ppt', name: 'Lecture 2 – Difficult Airway Algorithm', cls: 'res-ppt' },
+      { icon: '🎬', type: 'video', name: 'Direct Laryngoscopy Technique Video', cls: 'res-vid' },
+      { icon: '🔬', type: 'lab', name: 'Airway Manikin Lab Session', cls: 'res-lab' },
+    ]
+  },
+};
+
+// Assign courses to year/sem slots
+const yearSemMap = {
+  'year1-sem1': ['anatomy', 'physiology', 'biochemistry'],
+  'year1-sem2': ['microbiology', 'clinical_skills'],
+  'year2-sem1': ['pharmacology', 'pathophysiology'],
+  'year2-sem2': ['airway_management'],
+  'year3-sem1': ['general_anesthesia', 'regional_anesthesia'],
+  'year3-sem2': ['obstetric_anesthesia', 'pediatric_anesthesia'],
+  'year4-sem1': ['critical_care', 'pain_management', 'research_methods'],
+  'year4-sem2': ['clinical_internship'],
+};
+
+// ===== RENDER COURSE CARDS =====
+function renderCard(courseId) {
+  const c = courses[courseId];
+  if (!c) return '';
+  return `<div class="course-card ${c.color}" onclick="openCourse('${c.id}')">
+    <div class="card-header">
+      <span class="course-code">${c.code}</span>
+      <div class="card-credits">
+        <div class="credit-badge"><div class="val">${c.credits}</div><div class="type">Credits</div></div>
+        <div class="credit-sep"></div>
+        <div class="credit-badge"><div class="val">${c.ects}</div><div class="type">ECTS</div></div>
+      </div>
+    </div>
+    <div class="course-name">${c.name}</div>
+    <div class="card-actions">
+      <button class="action-btn btn-primary" onclick="event.stopPropagation();openCourse('${c.id}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Study
+      </button>
+      <button class="action-btn btn-${c.color === 'teal' ? 'amber' : c.color}" onclick="event.stopPropagation();openCourse('${c.id}');setTimeout(toggleChat,400)">
+        🤖 Ask AI
+      </button>
+    </div>
+  </div>`;
+}
+
+// Build all grids
+Object.entries(yearSemMap).forEach(([gridId, ids]) => {
+  const el = document.getElementById(gridId);
+  if (el) el.innerHTML = ids.map(renderCard).join('');
+});
+
+// ===== TABS =====
+function switchTab(tab) {
+  document.querySelectorAll('.year-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  const tabMap = { home: 0, year1: 1, year2: 2, year3: 3, year4: 4, search: 5 };
+  document.querySelectorAll('.tab-btn')[tabMap[tab] || 0].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== SEARCH =====
+function doSearch() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const resultsEl = document.getElementById('searchResults');
+  const emptyEl = document.getElementById('searchEmpty');
+  if (!q) { resultsEl.innerHTML = ''; emptyEl.style.display = 'none'; return; }
+  const matches = Object.values(courses).filter(c =>
+    c.name.toLowerCase().includes(q) ||
+    c.code.toLowerCase().includes(q) ||
+    c.topics.some(t => t.toLowerCase().includes(q))
+  );
+  if (!matches.length) { resultsEl.innerHTML = ''; emptyEl.style.display = 'block'; return; }
+  emptyEl.style.display = 'none';
+  resultsEl.innerHTML = matches.map(c => renderCard(c.id)).join('');
+}
+
+// ===== MODAL =====
+let currentCourse = null;
+function openCourse(id) {
+  const c = courses[id];
+  if (!c) return;
+  currentCourse = c;
+  document.getElementById('modalTitle').textContent = c.name;
+
+  const colors = {
+    teal: ['#E1F5EE','#085041'], amber: ['#FAEEDA','#633806'],
+    coral: ['#FAECE7','#4A1B0C'], purple: ['#EEEDFE','#26215C'],
+    blue: ['#E6F1FB','#042C53']
+  };
+  const [bg, fg] = colors[c.color] || colors.teal;
+  document.getElementById('modalMeta').innerHTML = `
+    <span class="meta-chip" style="background:${bg};color:${fg}">${c.code}</span>
+    <span class="meta-chip" style="background:${bg};color:${fg}">📚 ${c.credits} Credit Hours</span>
+    <span class="meta-chip" style="background:${bg};color:${fg}">🇪🇺 ${c.ects} ECTS</span>
+    <span class="meta-chip" style="background:${bg};color:${fg}">Year ${c.year} · Semester ${c.sem}</span>
+  `;
+
+  document.getElementById('modalTopics').innerHTML = c.topics.map(t => `<li>${t}</li>`).join('');
+  document.getElementById('modalResources').innerHTML = c.resources.map(r =>
+    `<li class="resource-item" onclick="handleResource('${r.name}','${r.type}')">
+      <div class="resource-icon ${r.cls}">${r.icon}</div>
+      <div class="resource-info">
+        <div class="res-name">${r.name}</div>
+        <div class="res-type">${r.type === 'ppt' ? 'PowerPoint Slides' : r.type === 'pdf' ? 'PDF Document' : r.type === 'video' ? 'Video' : 'Lab Resource'}</div>
+      </div>
+    </li>`
+  ).join('');
+
+  // reset chat
+  document.getElementById('aiChatArea').classList.remove('open');
+  document.getElementById('chatMessages').innerHTML = '';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalIfOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function handleResource(name, type) {
+  alert('📂 Resource: ' + name + '\n\nTo add real files:\n1. Upload your PPTs/PDFs to Google Drive\n2. Replace this alert with a link to your file\n\nFor now, use the AI Tutor button to ask about this topic!');
+}
+
+// ===== AI CHAT =====
+function toggleChat() {
+  const area = document.getElementById('aiChatArea');
+  const isOpen = area.classList.toggle('open');
+  if (isOpen && currentCourse) {
+    const msgs = document.getElementById('chatMessages');
+    if (!msgs.innerHTML) {
+      addMessage('ai', `Hi! I'm your AI tutor for <strong>${currentCourse.name}</strong>. Ask me anything — definitions, mechanisms, clinical scenarios, exam tips, or any topic listed above! 🩺`);
+    }
+    setTimeout(() => document.getElementById('chatInput').focus(), 100);
+  }
+}
+
+function addMessage(role, html) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + role;
+  div.innerHTML = `<div class="bubble">${html}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const q = input.value.trim();
+  if (!q || !currentCourse) return;
+  input.value = '';
+  addMessage('user', q);
+
+  const typingId = 'typing-' + Date.now();
+  const msgs = document.getElementById('chatMessages');
+  msgs.innerHTML += `<div class="chat-msg ai" id="${typingId}"><div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  const systemPrompt = `You are an expert medical tutor specializing in anesthesia for students at Addis Ababa University, Ethiopia. The student is asking about the course "${currentCourse.name}" (${currentCourse.code}). Key topics: ${currentCourse.topics.join(', ')}. Give clear, accurate, educational answers. Be concise but thorough. Use simple language. When relevant, add clinical pearls that are important for an anesthesia student.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: q }]
+      })
+    });
+    const data = await res.json();
+    const answer = data.content?.map(b => b.text || '').join('') || 'Sorry, I could not get an answer. Please try again.';
+    document.getElementById(typingId)?.remove();
+    // Format newlines as paragraphs
+    const formatted = answer.replace(/\n\n/g, '<br><br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    addMessage('ai', formatted);
+  } catch (e) {
+    document.getElementById(typingId)?.remove();
+    addMessage('ai', 'Connection error. Make sure you are using this inside Claude.ai for the AI feature to work. You can still use all the course materials above!');
+  }
+}
+</script>
+</body>
+</html>
