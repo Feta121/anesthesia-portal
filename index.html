@@ -1666,14 +1666,14 @@ async function send() {
   document.getElementById('chatMsgs').scrollTop = 99999;
  
   try {
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyATwQsF0iuk1ALA6pSzW0hswTOj3jvh-is', {
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyATwQsF0iuk1ALA6pSzW0hswTOj3jvh-is', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         contents:[{parts:[{text:`You are an expert anesthesia tutor for students at Addis Ababa University, Ethiopia. The student is studying "${cur.name}" (${cur.code}, ${cur.ects} ECTS, Year ${cur.year}). Key topics: ${cur.topics.join(', ')}. Give clear, accurate, clinically relevant answers. Use simple language. Add Ethiopian/African clinical context where relevant. Be concise but thorough.\n\nStudent question: ${q}`}]}]
       })
     });
-    const data = await r.json();
+    const data = await res.json();
     const ans = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No answer received.';
     document.getElementById(tid)?.remove();
     addMsg('ai', ans.replace(/\n\n/g,'<br><br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>'));
