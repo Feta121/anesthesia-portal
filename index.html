@@ -1153,7 +1153,7 @@ const DB = {
   {ic:'📊',cls:'ri-ppt',name:'Lecture 6 — Health Care Ethics',type:'PPT',url:''},
   {ic:'📊',cls:'ri-ppt',name:'Lecture 7 — Principles and Standards of Compassionate Care',type:'PPT',url:''},
   {ic:'📊',cls:'ri-ppt',name:'Lecture 8 — Documentation and Record Keeping',type:'PPT',url:''},
-  ]
+]
 },
   anstm2173: {
     id:'anstm2173', code:'AnstM-2173', name:'Introduction to Anesthesia II',
@@ -1618,7 +1618,7 @@ function openCourse(id) {
   ].join('');
   document.getElementById('mTopics').innerHTML = cur.topics.map(t=>`<span class="topic-pill">${t}</span>`).join('');
   document.getElementById('mRes').innerHTML = cur.resources.map(r=>
-    `<li class="res-item" onclick="handleRes('${r.name}')">
+    `<li class="res-item" onclick="handleRes('${r.name}','${r.url}')">
       <div class="res-ic ${r.cls}">${r.ic}</div>
       <div><div class="res-name">${r.name}</div><div class="res-sub">${r.type}</div></div>
     </li>`
@@ -1633,8 +1633,12 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 function closeOuter(e) { if(e.target===document.getElementById('overlay')) closeModal(); }
-function handleRes(name) {
-  alert('📂 ' + name + '\n\nTo link your real files:\n→ Upload to Google Drive\n→ Get shareable link\n→ Replace this alert with that link\n\nFor now use the AI Tutor to ask about this topic!');
+function handleRes(name, url) {
+  if(url && url !== '') {
+    window.open(url, '_blank');
+  } else {
+    alert('📂 ' + name + '\n\nThis file has not been linked yet.\nCheck back soon!');
+  }
 }
  
 // ── AI CHAT ──
