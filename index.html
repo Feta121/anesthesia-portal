@@ -1140,6 +1140,18 @@ const DB = {
       {ic:'📄',cls:'ri-pdf',name:'Perioperative Diabetes Management',type:'PDF'},
     ]
   },
+<<<<<<< HEAD
+  anstm1103: {
+  id:'anstm1103', code:'AnstM-1103', name:'Introduction to Anesthesia I',
+  ects:5, weeks:20, delivery:'Parallel', year:2, sem:1, color:'c-green',
+  topics:['History of anesthesia','Scope of anesthesia practice','Types of anesthesia','The anesthesia team','Operating room environment','Basic patient monitoring','Introduction to anesthesia equipment','Patient safety culture'],
+  resources:[
+    {ic:'📊',cls:'ri-ppt',name:'Lecture 1 — History & Scope of Anesthesia',type:'PPT'},
+    {ic:'📄',cls:'ri-pdf',name:'Anesthesia Scope of Practice Overview',type:'PDF'},
+    {ic:'🎬',cls:'ri-vid',name:'Inside the Operating Room — Orientation',type:'Video'}
+  ]
+},
+=======
   anstm1103: {
   id:'anstm1103', code:'AnstM-1103', name:'Introduction to Anesthesia I',
   ects:5, weeks:20, delivery:'Parallel', year:2, sem:1, color:'c-green',
@@ -1155,6 +1167,7 @@ const DB = {
   {ic:'📊',cls:'ri-ppt',name:'Lecture 8 — Documentation and Record Keeping',type:'PPT',url:'https://docs.google.com/presentation/d/1TyxRTtZyYDJwgmHukVPXXgkpRNmgETN9/preview'},
 ]
 },
+>>>>>>> 038f794a0dd2b54f8438476f5e5072b6b84606ae
   anstm2173: {
     id:'anstm2173', code:'AnstM-2173', name:'Introduction to Anesthesia II',
     ects:4, weeks:20, delivery:'Parallel', year:2, sem:1, color:'c-green',
@@ -1549,18 +1562,15 @@ async function sendGuideMsg() {
   msgs.innerHTML += '<div class="cmsg ai" id="' + tid + '"><div class="bbl"><div class="dots"><span></span><span></span><span></span></div></div></div>';
   msgs.scrollTop = 9999;
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        system:'You are an expert anesthesia tutor for AAU students in Ethiopia. Answer questions about anesthesia textbooks, guidelines, and clinical references. Be thorough, clinically relevant, and mention specific chapters or sections when helpful.',
-        messages:[{role:'user', content:q}]
-      })
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyATwQsF0iuk1ALA6pSzW0hswTOj3jvh-is', {
+  method:'POST',
+  headers:{'Content-Type':'application/json'},
+  body: JSON.stringify({
+    contents:[{parts:[{text:'You are an expert anesthesia tutor for AAU students in Ethiopia. Answer questions about anesthesia textbooks, guidelines, and clinical references. Be thorough, clinically relevant, and mention specific chapters or sections when helpful.\n\nStudent question: ' + q}]}]
+  })
     });
     const data = await res.json();
-    const ans = data.content?.map(b=>b.text||'').join('') || 'No answer received.';
+    const ans = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No answer received.';
     document.getElementById(tid)?.remove();
     const a = document.createElement('div');
     a.className = 'cmsg ai';
@@ -1669,18 +1679,15 @@ async function send() {
   document.getElementById('chatMsgs').scrollTop = 99999;
  
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyATwQsF0iuk1ALA6pSzW0hswTOj3jvh-is', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        system:`You are an expert anesthesia tutor for students at Addis Ababa University, Ethiopia. The student is studying "${cur.name}" (${cur.code}, ${cur.ects} ECTS, Year ${cur.year}). Key topics: ${cur.topics.join(', ')}. Give clear, accurate, clinically relevant answers. Use simple language. Add Ethiopian/African clinical context where relevant. Be concise but thorough.`,
-        messages:[{role:'user', content:q}]
+        contents:[{parts:[{text:`You are an expert anesthesia tutor for students at Addis Ababa University, Ethiopia. The student is studying "${cur.name}" (${cur.code}, ${cur.ects} ECTS, Year ${cur.year}). Key topics: ${cur.topics.join(', ')}. Give clear, accurate, clinically relevant answers. Use simple language. Add Ethiopian/African clinical context where relevant. Be concise but thorough.\n\nStudent question: ${q}`}]}]
       })
     });
     const data = await r.json();
-    const ans = data.content?.map(b=>b.text||'').join('')||'Sorry, no response. Please try again.';
+    const ans = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No answer received.';
     document.getElementById(tid)?.remove();
     addMsg('ai', ans.replace(/\n\n/g,'<br><br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>'));
   } catch(e) {
