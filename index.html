@@ -1553,7 +1553,7 @@ async function sendGuideMsg() {
   method:'POST',
   headers:{'Content-Type':'application/json'},
   body: JSON.stringify({
-    contents:[{parts:[{text:'You are an expert anesthesia tutor for AAU students in Ethiopia. Answer questions about anesthesia textbooks, guidelines, and clinical references. Be thorough, clinically relevant, and mention specific chapters or sections when helpful.\n\nStudent question: ' + q}]}]
+    contents:[{role:'user', parts:[{text:'You are an expert anesthesia tutor for AAU students in Ethiopia. Answer questions about anesthesia textbooks, guidelines, and clinical references. Be thorough, clinically relevant, and mention specific chapters or sections when helpful. Student question: ' + q}]}]
   })
     });
     const data = await res.json();
@@ -1670,7 +1670,7 @@ async function send() {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        contents:[{parts:[{text:`You are an expert anesthesia tutor for students at Addis Ababa University, Ethiopia. The student is studying "${cur.name}" (${cur.code}, ${cur.ects} ECTS, Year ${cur.year}). Key topics: ${cur.topics.join(', ')}. Give clear, accurate, clinically relevant answers. Use simple language. Add Ethiopian/African clinical context where relevant. Be concise but thorough.\n\nStudent question: ${q}`}]}]
+        contents:[{role:'user', parts:[{text:'You are an expert anesthesia tutor for students at Addis Ababa University, Ethiopia. The student is asking about ' + cur.name + ' which covers these topics: ' + cur.topics.join(', ') + '. Give clear, accurate, clinically relevant answers. Use simple language. Student question: ' + q}]}]
       })
     });
     const data = await res.json();
