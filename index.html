@@ -728,10 +728,34 @@ footer strong { color: var(--green); }
 </head>
 <body>
  
+<!-- SPLASH SCREEN -->
+<div id="splash" style="position:fixed;inset:0;background:#0a2540;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.8s ease;">
+  <img src="anesthesia_aau_concept_a_v2.svg" alt="AAU Anesthesia" style="width:min(520px,85vw);animation:splashIn 0.8s ease forwards;">
+  <p style="color:rgba(255,255,255,0.5);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;margin-top:32px;letter-spacing:0.1em;text-transform:uppercase;">Student Portal · Loading...</p>
+</div>
+
+<style>
+@keyframes splashIn {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+</style>
+
+<script>
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    const splash = document.getElementById('splash');
+    splash.style.opacity = '0';
+    setTimeout(function() { splash.style.display = 'none'; }, 800);
+  }, 2000);
+});
+</script>
+
 <!-- HEADER -->
 <header>
   <div class="header-pattern"></div>
   <div class="header-inner">
+    <img src="anesthesia_aau_concept_a_v2.svg" alt="AAU Anesthesia Logo" style="height:70px;margin-bottom:18px;display:block;">
     <div class="header-top">
       <span class="aau-badge">🇪🇹 Addis Ababa University</span>
       <span class="aau-badge">College of Health Sciences</span>
@@ -1160,11 +1184,9 @@ const DB = {
     ects:4, weeks:20, delivery:'Parallel', year:2, sem:1, color:'c-green',
     topics:['History of anesthesia','Roles of anesthetist','OR environment','Anesthesia machine basics','Patient safety','Ethical principles'],
     resources:[
-      {ic:'📄',cls:'ri-pdf',name:'Lecture 1 – Introduction to Anesthesia History',type:'PDF',url:'https://drive.google.com/file/d/1Eff4g7gSw9s3BeIQhBwXdHi3JWrC1d49/view?usp=sharing'},
-      {ic:'📄',cls:'ri-pdf',name:'Lecture 2 – The Pre-operative Evaluation',type:'PDF',url:'https://drive.google.com/file/d/1HRJQFkS_6c8fsc7q7iR1JIt6D-SWcoZo/view?usp=sharing'},
-      {ic:'📄',cls:'ri-pdf',name:'Lecture 3 – Preparation for Anesthesia',type:'PDF',url:'https://drive.google.com/file/d/16OUoCFLFZxiT1RUHQhUHJD61EMBZa-Mw/view?usp=sharing'},
-      {ic:'📄',cls:'ri-pdf',name:'Lecture 4 – Anesthesia Machine',type:'PDF',url:'https://drive.google.com/file/d/16BvyWKletpk9PVQPFOgvVcKprVo4TZKA/view?usp=sharing'},
-      {ic:'📄',cls:'ri-pdf',name:'Lecture 5 – The Operation Room',type:'PDF',url:'https://drive.google.com/file/d/10AeufYLGNbLP3zKm35kxpYt2sLLFsv_Z/view?usp=sharing'},
+      {ic:'📊',cls:'ri-ppt',name:'Lecture 1 – History & Scope of Anesthesia',type:'PowerPoint'},
+      {ic:'📊',cls:'ri-ppt',name:'Lecture 2 – OR Safety & Environment',type:'PowerPoint'},
+      {ic:'📄',cls:'ri-pdf',name:'Anesthesia Machine Checklist',type:'PDF'},
     ]
   },
  
@@ -1551,20 +1573,18 @@ async function sendGuideMsg() {
   msgs.innerHTML += '<div class="cmsg ai" id="' + tid + '"><div class="bbl"><div class="dots"><span></span><span></span><span></span></div></div></div>';
   msgs.scrollTop = 9999;
   try {
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-  method:'POST',
-  headers:{
-    'Content-Type':'application/json',
-    'Authorization':'Bearer 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'
-  },
-  body: JSON.stringify({
-    model:'llama3-8b-8192',
-    messages:[{role:'user', content:'You are an expert anesthesia tutor for AAU students in Ethiopia. Answer questions about anesthesia textbooks, guidelines, and clinical references. Be thorough, clinically relevant, and mention specific chapters or sections when helpful. Student question: ' + q}],
-    max_tokens:1000
-  })
-});
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:'You are an expert anesthesia tutor for AAU students in Ethiopia. Answer questions about anesthesia textbooks, guidelines, and clinical references. Be thorough, clinically relevant, and mention specific chapters or sections when helpful.',
+        messages:[{role:'user', content:q}]
+      })
+    });
     const data = await res.json();
-    const ans = data.choices?.[0]?.message?.content || 'No answer received.';
+    const ans = data.content?.map(b=>b.text||'').join('') || 'No answer received.';
     document.getElementById(tid)?.remove();
     const a = document.createElement('div');
     a.className = 'cmsg ai';
@@ -1673,20 +1693,18 @@ async function send() {
   document.getElementById('chatMsgs').scrollTop = 99999;
  
   try {
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-  method:'POST',
-  headers:{
-    'Content-Type':'application/json',
-    'Authorization':'Bearer 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'
-  },
-  body: JSON.stringify({
-    model:'llama3-8b-8192',
-    messages:[{role:'user', content:'You are an expert anesthesia tutor for students at Addis Ababa University, Ethiopia. The student is asking about ' + cur.name + ' which covers: ' + cur.topics.join(', ') + '. Give clear, accurate, clinically relevant answers. Student question: ' + q}],
-    max_tokens:1000
-  })
-});
-    const data = await res.json();
-    const ans = data.choices?.[0]?.message?.content || 'No answer received.';
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:`You are an expert anesthesia tutor for students at Addis Ababa University, Ethiopia. The student is studying "${cur.name}" (${cur.code}, ${cur.ects} ECTS, Year ${cur.year}). Key topics: ${cur.topics.join(', ')}. Give clear, accurate, clinically relevant answers. Use simple language. Add Ethiopian/African clinical context where relevant. Be concise but thorough.`,
+        messages:[{role:'user', content:q}]
+      })
+    });
+    const data = await r.json();
+    const ans = data.content?.map(b=>b.text||'').join('')||'Sorry, no response. Please try again.';
     document.getElementById(tid)?.remove();
     addMsg('ai', ans.replace(/\n\n/g,'<br><br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>'));
   } catch(e) {
